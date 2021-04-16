@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 10:48:01 by chgilber          #+#    #+#             */
-/*   Updated: 2021/04/14 11:48:45 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/04/14 13:08:35 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,14 @@ _value(NULL)
 				//destructeur
 			~vector()
 			{
-				_alloc.destroy(_value);
+				clear();
 			}
 
 			template <class InputIt>
 			void	assign(InputIt first, InputIt last,
 					typename InputIt::difference_type * = NULL)
 			{
+				clear();
 				while(first < last)
 				{
 					push_back(*first);
@@ -90,6 +91,7 @@ _value(NULL)
 			}
 			void	assign(size_type n, const value_type &v)
 			{
+				clear();
 				for (size_t i = 0; i < n; i++)
 					push_back(v);
 			}
@@ -134,8 +136,12 @@ _value(NULL)
 
 			void	clear()
 			{
-				_alloc.destroy(_value);
-				_alloc.deallocate(_value, _ncapacity);
+				if (_value != NULL)
+				{
+					_alloc.destroy(_value);
+					_alloc.deallocate(_value, _ncapacity);
+				}
+				_value = NULL;
 				_n = 0;
 				_ncapacity = 0;
 			}
@@ -260,7 +266,6 @@ _value(NULL)
 			{
 				while (first != last)
 				{
-					std::cout << *pos << " et f:" << *first << std::endl;
 					pos = insert(pos, *first);
 					first++;
 					pos++;
@@ -276,8 +281,10 @@ _value(NULL)
 			{
 				clear();
 				_alloc = copy._alloc;
-				for (size_t i = 0; i < copy._n; i++)
-					push_back(copy._value[i]);
+				if (copy._ncapacity != 0)
+					reserve(copy._ncapacity);
+				if (copy.size() != 0)
+					assign(copy.begin(), copy.end());
 				return *this;
 			}
 
@@ -330,18 +337,15 @@ _value(NULL)
 				{
 					_value = _alloc.allocate(n);
 					_ncapacity = n;
-					std::cout << "NULLLLLL : "<< n << std::endl;
 					return ;
 				}
 				pointer		tmp;
-				std::cout << "pusreservenfor : "<< n << std::endl;
 				tmp = _alloc.allocate(n);
-				std::cout << "pushalocnfor" << std::endl;
 				for (size_type i = 0; i < _n; i++)
 					_alloc.construct(&tmp[i], _value[i]);
-				for (size_type i = 0; i < _n; i++)
-					_alloc.destroy(&_value[i]);
+				_alloc.destroy(_value);
 				_alloc.deallocate(_value, _ncapacity);
+				_value = NULL;
 				_ncapacity = n;
 				_value = tmp;
 			}
@@ -361,20 +365,10 @@ _value(NULL)
 
 			void	swap(vector &x)
 			{
-				std::cout << " here0" << std::endl;
 				vector<T>	tmp;
 				tmp = x;
-				std::cout << " here0" << std::endl;
 				x = *this;
 				*this = tmp;
-			//	tmp.clear();
-			//	tmp.assign(x.begin(), x.end());
-			//	x.clear();
-			//	x.assign(begin(),end());
-			//	clear();
-			//	assign(tmp.begin(), tmp.end());
-			//	tmp.clear();
-				std::cout << "LETSGO" << std::endl;
 			}
 			};
 	template <class T, class Alloc>
@@ -434,7 +428,6 @@ _value(NULL)
 	template <class T, class Alloc>
 		void		swap(vector<T,Alloc>& x, vector<T,Alloc>& y)
 		{
-				std::cout << "out" << std::endl;
 			x.swap(y);
 		}
 }

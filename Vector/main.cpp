@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 16:36:43 by chgilber          #+#    #+#             */
-/*   Updated: 2021/04/14 11:55:05 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/04/14 12:20:03 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(void)
 	ft::vector<int> first (3,100);   // three ints with a value of 100
 	ft::vector<int> second (15,200);  // five ints with a value of 200
 
-	std::cout <<" ft   " << myv.size() << std::endl;
+/*	std::cout <<" ft   " << myv.size() << std::endl;
 	std::cout << "true " << truv.size() << std::endl;
 	std::cout << " ft  " << myv.max_size() << std::endl;
 	std::cout << "true " << truv.max_size() << std::endl;
@@ -32,7 +32,7 @@ int	main(void)
 	std::vector<int>::iterator	ite = truv.begin();
 	std::cout << "true " << *truv.erase(ite) << std::endl;
 	std::cout << " ft  " << *myv.erase(it) << std::endl;
-	std::cout << "\nTest with swap\n\n";
+*/	std::cout << "\nTest with swap\n\n";
 
 	std::cout << "First BEFORE swap : ";
 	for (ft::vector<int>::iterator it=first.begin(); it!=first.end(); it++)
@@ -93,7 +93,7 @@ int	main(void)
 	for (ft::vector<int>::iterator it=lst2.begin(); it!=lst2.end(); it++)
 		std::cout << ' ' << *it;
 	std::cout << " size = " << lst2.size();
-	std::cout << '\n';
+/*	std::cout << '\n';
 	std::cout << "\nTest with overload swap\n\n";
 
 	ft::vector<int> foo (3,100);   // three ints with a value of 100
@@ -119,5 +119,5 @@ int	main(void)
 	for (ft::vector<int>::iterator it = bar.begin(); it!=bar.end(); ++it)
 		std::cout << ' ' << *it;
 	std::cout << '\n';
-
+*/
 }

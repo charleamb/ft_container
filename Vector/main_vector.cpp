@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 18:36:23 by chgilber          #+#    #+#             */
-/*   Updated: 2021/04/14 11:49:17 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/04/14 12:45:16 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -368,7 +368,7 @@ int main(int argc, const char *argv[])
 	std::cout << " size = " << lst2.size();
 	std::cout << '\n';
 }
-/*
+
 {
 	std::cout << "\nTest with relational operator\n\n";
 	MODE::vector<int> a;
@@ -417,6 +417,6 @@ int main(int argc, const char *argv[])
 		std::cout << ' ' << *it;
 	std::cout << '\n';
 }
-*/
+
 	return (0);
 }
