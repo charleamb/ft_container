@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 10:48:01 by chgilber          #+#    #+#             */
-/*   Updated: 2021/04/16 17:22:34 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/04/26 14:53:35 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "Bidirectional_iterator.hpp"
 #include "Reverse_Bidirectional_iterator.hpp"
 # define RBI Reverse_Bidirectional_Iterator
+# define BI Bidirectional_Iterator
 namespace ft
 {
 	template < class T, class Alloc = std::allocator<T> >
@@ -33,37 +34,34 @@ namespace ft
 			typedef T									*pointer;
 			typedef const T								*const_pointer;
 			typedef Bidirectional_Iterator <value_type>	iterator;
-			typedef const Bidirectional_Iterator <value_type>	const_iterator;
-			typedef RBI <value_type>						reverse_iterator;
+			typedef const BI <value_type>				const_iterator;
+			typedef RBI <value_type>					reverse_iterator;
 			typedef const RBI <value_type>				reverse_const_iterator;
 			typedef	ptrdiff_t							difference_type;
 			typedef	size_t								size_type;
 		
 		private:
-				typedef struct	l_list
-				{
-					value_type		value;
-					l_list			*next;
-					l_list			*bef;
-				}				l_list;
-				l_list			*_l;
-				l_list			*_start;
-				l_list			*_end;
+				l_list<T>			*_start;
+				l_list<T>			*_end;
 				allocator_type	_alloc;
 				size_type		_n;
 				void		init(void)
 				{
-					_l = new l_list;
-					_start = _l;
-					_end = _l;
+					_start = new l_list<T>;
+					_end = new l_list<T>;
+
+					_start->next = _end;
+					_start->bef = _end;
+					_end->bef = _start;
+					_end->next = _start;
 				}
 
-				l_list		*find(iterator pos)
+				l_list<T>		*find(iterator pos)
 				{
-					l_list	*find = _start;
+					l_list<T>	*find = _start;
 
 					for (iterator it = begin(); it != pos && it != end(); it++)
-						find = find->_next;
+						find = find->next;
 					return (find);
 				}
 
@@ -93,6 +91,7 @@ namespace ft
 					it++;
 				}
 				_end = copy._end;
+				copy.clear();
 			}
 			//construteur range
 			template <class InputIt>
@@ -108,6 +107,8 @@ namespace ft
 			~list()
 			{
 				clear();
+				delete _start;
+				delete _end;
 			}
 
 			template <class InputIt>
@@ -115,7 +116,7 @@ namespace ft
 					typename InputIt::difference_type * = NULL)
 			{
 				clear();
-				init();
+				_start = _end;
 				while(first != last)
 				{
 					push_back(*first);
@@ -125,18 +126,18 @@ namespace ft
 			void	assign(size_type n, const value_type &v)
 			{
 				clear();
-				init();
+				_start = _end;
 				for (size_t i = 0; i < n; i++)
 					push_back(v);
 			}
 
 			reference			back()
 			{
-				return _end->value;
+				return _end->bef->value;
 			}
 			const_reference		back() const
 			{
-				return _end->value;
+				return _end->bef->value;
 			}
 
 			//function list in alpha order
@@ -151,13 +152,7 @@ namespace ft
 
 			void	clear()
 			{
-				while (_start != _end)
-				{
-					_start = _start->next;
-					delete _start->bef;
-				}
-				_start = NULL;
-				_start->value =  0;
+				erase(begin(), end());
 				_n = 0;
 			}
 
@@ -175,41 +170,38 @@ namespace ft
 				return iterator(_end);
 			}
 
-
 			iterator	erase(iterator position)
 			{
-				iterator it = begin();
-				while (it < position)
-					it++;
-				l_list	tmp = find(it);
-				if (tmp != _end)
+				if (_n == 0)
+					return position;
+				l_list<T>	*tmp = find(position);
+				if (tmp == _start)
+					_start = tmp->next;
+				else if (_start != _end->bef)
 				{
 					tmp->bef->next = tmp->next;
 					tmp->next->bef = tmp->bef;
 				}
-				if (tmp == _start)
+				else if (tmp == _end->bef)
+					_end->bef = tmp->bef;
+				if (tmp != _start && tmp != _end)
 				{
-					_start = tmp->next;
+					delete tmp;
+				std::cout << "erase" << std::endl;
 				}
-				if (tmp == _end)
-				{
-					_end = tmp->bef;
-				}
-				delete tmp;
 				_n--;
 				return position;
 			}
 			iterator	erase(iterator first, iterator last)
 			{
-				iterator it = begin();
-				while (it < first)
-					it++;
-				while (it < last)
+				iterator		tmp = first;
+				while (first != last)
 				{
-					it = erase(it);
-					it++;
+					tmp++;
+					erase(first);
+					first = tmp;
 				}
-				return it;
+				return first;
 			}
 
 			reference		front()
@@ -228,15 +220,16 @@ namespace ft
 			
 			iterator		insert(iterator pos, const value_type &val)
 			{
-				l_list	*tmp = find(pos);
-				l_list	*in = new l_list;
+				l_list<T>	*tmp = find(pos);
+				l_list<T>	*in = new l_list<T>;
+				
 				in->value = val;
-				in->next = tmp;
-				if (tmp == _start)
-					in->bef = _start;
+				if (_n == 0)
+					_start = in;
 				else
-					in->before = tmp->bef;
-				tmp->bef = in;
+					tmp->bef = in;
+				in->next = tmp;
+				in->bef = tmp->bef;
 				_n++;
 				return pos;
 			}
@@ -251,9 +244,9 @@ namespace ft
 			{
 				while (first != last)
 				{
-					pos = insert(pos, *first);
+					std::cout << *first << std::endl;
+					insert(pos, *first);
 					first++;
-					pos++;
 				}
 			}
 
@@ -292,10 +285,8 @@ namespace ft
 			list&	operator=(const list &copy)
 			{
 				clear();
-				_start = copy._start;
-				_end = copy._end;
 				if (copy.size() != 0)
-					assign(copy.begin(), copy.end());
+					insert(begin(), copy.begin(), copy.end());
 				return *this;
 			}
 
@@ -305,27 +296,27 @@ namespace ft
 			}
 			void	pop_front()
 			{
-				erade(begin());
+				erase(begin());
 			}
 
 			void	push_back(const value_type	&val)
 			{
-				if (_n >= max_size())
+				if (_n <= max_size())
 				{
-					l_list	*add = new l_list;
-					add->value = val;
-					add->bef = _end;
+					l_list<T>	*add = new l_list<T>;
+					_end->value = val;
 					_end->next = add;
+					add->bef = _end;
 					_end = add;
-					add->next = _start;
-				_n++;
+					_end->next = _start;
+					_n++;
 				}
 			}
 			void	push_front(const value_type	&val)
 			{
 				if (_n >= max_size())
 				{
-					l_list	*add = new l_list;
+					l_list<T>	*add = new l_list<T>;
 					add->value = val;
 					add->bef = _end;
 					_end->next = add;

@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 18:29:35 by chgilber          #+#    #+#             */
-/*   Updated: 2021/04/16 16:58:32 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/04/19 07:38:29 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@
 
 namespace ft
 {
+template <typename T>
+struct	l_list
+{
+	T				value;
+	l_list			*next;
+	l_list			*bef;
+};//				l_list;
+
 	template <typename T>
 	class Bidirectional_Iterator
 	{
@@ -29,22 +37,16 @@ namespace ft
 			typedef T									*pointer;
 			typedef	ptrdiff_t							difference_type;
 			typedef size_t								size_type;
-
-		private:
-				typedef struct	l_list
-				{
-					value_type		value;
-					l_list			*next;
-					l_list			*bef;
-				}				l_list;
 			
-			l_list						*_ptr;
+		private:
+			
+			l_list<T>								*_ptr;
 			typedef Bidirectional_Iterator			self;
 
 		public:
 			Bidirectional_Iterator() {}
 
-			Bidirectional_Iterator(l_list *other): _ptr(other) {}
+			Bidirectional_Iterator(l_list<T> *other): _ptr(other) {}
 
 			Bidirectional_Iterator(Bidirectional_Iterator *other)
 			{

@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 18:29:35 by chgilber          #+#    #+#             */
-/*   Updated: 2021/04/16 16:50:45 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/04/16 18:02:32 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include <cstddef> //ptrdiff_t
+#include "Bidirectional_iterator.hpp"
 
 namespace ft
 {
@@ -31,21 +32,13 @@ namespace ft
 			typedef size_t								size_type;
 
 		private:
-				typedef struct	l_list
-				{
-					value_type		value;
-					l_list			*next;
-					l_list			*bef;
-				}				l_list;
-
-			
-			l_list						*_ptr;
+			l_list<T>										*_ptr;
 			typedef Reverse_Bidirectional_Iterator			self;
 
 		public:
 			Reverse_Bidirectional_Iterator() {}
 
-			Reverse_Bidirectional_Iterator(l_list *other): _ptr(other) {}
+			Reverse_Bidirectional_Iterator(l_list<T> *other): _ptr(other) {}
 
 			Reverse_Bidirectional_Iterator(Reverse_Bidirectional_Iterator *other)
 			{

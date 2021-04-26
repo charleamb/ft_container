@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 13:16:08 by chgilber          #+#    #+#             */
-/*   Updated: 2021/04/16 15:01:37 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/04/19 08:58:48 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int main(int argc, const char *argv[])
 	MODE::list<int>	lst(4, 12);
 	MODE::list<int>	lst2(7);
 	MODE::list<int>	lst3;
+	lst.push_back(16);
 	MODE::list<int>::iterator		ite = lst.begin();
 
 	std::cout << "Lst2 = lst\n";
@@ -129,7 +130,7 @@ int main(int argc, const char *argv[])
 	for (MODE::list<int>::iterator it = lst.begin(); it != lst.end(); it++)
 		std::cout << *it << std::endl;
 }
-
+/*
 {
 	std::cout << "Assign test\n\n";
 	MODE::list<int>	lst(4, 12);
@@ -375,7 +376,6 @@ int main(int argc, const char *argv[])
 		std::cout << *i << " ";
 	std::cout << std::endl;
 }
-/*
 {
 	std::cout << "\nTest with reverse :\n";
 	
