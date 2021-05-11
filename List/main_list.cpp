@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 13:16:08 by chgilber          #+#    #+#             */
-/*   Updated: 2021/04/19 08:58:48 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/05/11 18:02:20 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int main(int argc, const char *argv[])
 	MODE::list<int>	lst(4, 12);
 	MODE::list<int>	lst2(7);
 	MODE::list<int>	lst3;
-	lst.push_back(16);
 	MODE::list<int>::iterator		ite = lst.begin();
 
 	std::cout << "Lst2 = lst\n";
@@ -129,8 +128,9 @@ int main(int argc, const char *argv[])
 	std::cout << "lst size = " << lst.size() << std::endl;
 	for (MODE::list<int>::iterator it = lst.begin(); it != lst.end(); it++)
 		std::cout << *it << std::endl;
+	std::cout << "Clear achieve\n";
 }
-/*
+
 {
 	std::cout << "Assign test\n\n";
 	MODE::list<int>	lst(4, 12);
@@ -140,8 +140,8 @@ int main(int argc, const char *argv[])
 
 	MODE::list<int> test(2, 600);
 	MODE::list<int>::iterator start = test.begin(), end = test.end();
-	for (int i = 0; i < 6; i++)
-		start++;
+//	for (int i = 0; start != end; i++)
+//		start++;
 
 	std::cout << "Assign two value of 600 with iterator\n";
 	lst.assign(start, end);
@@ -173,6 +173,7 @@ int main(int argc, const char *argv[])
 	std::cout << "with_it size = " << with_it.size() << std::endl;
 }
 
+
 {
 	std::cout << "\nErase test :\n";
 	MODE::list<int>				lst;
@@ -181,6 +182,8 @@ int main(int argc, const char *argv[])
 	std::cout << "Create list with values 0 to 9\n";
 	for (int i = 0; i < 10; i++)
 		lst.push_back(i);
+	std::cout << "Created list\n";
+
 	it = lst.begin();
 	for (int i = 0; i < 7; i++)
 		it++;
@@ -255,20 +258,20 @@ int main(int argc, const char *argv[])
 	std::cout << "Pop back 2 times\n";
 	lst.pop_back();
 	lst.pop_back();
-//	lst.insert(lst.begin(), 4, 12);
+	lst.insert(lst.begin(), 4, 12);
 	for (MODE::list<int>::iterator i = lst.begin(); i != lst.end(); i++)
 		std::cout << *i << "\t";
 	std::cout << "\nPop front 2 times\n";
-//	lst.pop_front();
-//	lst.pop_front();
+	lst.pop_front();
+	lst.pop_front();
 	for (MODE::list<int>::iterator i = lst.begin(); i != lst.end(); i++)
 		std::cout << *i << "\t";
-
 	std::cout << "\nPush front values 0 to 8\n";
 	for (int i = 0; i < 9; i++)
 		lst.push_front(i);
 	for (MODE::list<int>::iterator i = lst.begin(); i != lst.end(); i++)
 		std::cout << *i << "\t";
+	std::cout << std::endl;
 }
 
 
@@ -329,7 +332,7 @@ int main(int argc, const char *argv[])
 		std::cout << ' ' << *it;
 	std::cout << '\n';
 
-//	lst.remove_if (is_even());               // emptu
+	lst.remove_if (is_even());               // emptu
 
 	std::cout << "mylist contains:";
 	for (MODE::list<int>::iterator it = lst.begin(); it != lst.end(); ++it)
@@ -376,12 +379,13 @@ int main(int argc, const char *argv[])
 		std::cout << *i << " ";
 	std::cout << std::endl;
 }
+
 {
 	std::cout << "\nTest with reverse :\n";
 	
 	MODE::list<int> lst;
 
-	for (int i = 1; i <= 10; ++i)
+	for (int i = 1; i < 10; ++i)
 		lst.push_back(i);
 	std::cout << "Initial value : ";
 	for (MODE::list<int>::iterator i = lst.begin(); i != lst.end(); i++)
@@ -460,7 +464,6 @@ int main(int argc, const char *argv[])
 	for (MODE::list<int>::iterator it = lst2.begin(); it != lst2.end(); ++it)
 		std::cout << ' ' << *it;;
 	std::cout << std::endl << std::endl;
-
 	std::cout << "Splice value 3 in lst1 to lst2\n";
 	lst2.splice (lst2.begin(), lst1, ite);
 	std::cout << "lst1 value after splice with it point to 3 :\nlst1 : ";
@@ -471,8 +474,7 @@ int main(int argc, const char *argv[])
 	for (MODE::list<int>::iterator it = lst2.begin(); it != lst2.end(); ++it)
 		std::cout << ' ' << *it;;
 	std::cout << std::endl << std::endl;
-
-	lst1.clear();
+}/*	lst1.clear();
 	lst1.push_back(1);
 	lst1.push_back(10);
 	lst1.push_back(20);
@@ -610,7 +612,7 @@ int main(int argc, const char *argv[])
 		std::cout << "|" << *it << "| ";
 	std::cout << std::endl;
 }
-
+*/
 {
 	std::cout << "\nTest with merge :\n\n";
 
@@ -666,7 +668,7 @@ int main(int argc, const char *argv[])
 	first.push_back(6.06);
 	first.sort();
 	second.sort();
-
+}/*
 	std::cout << "first contains before 2nd merge:";
 	for (MODE::list<double>::iterator it=first.begin(); it!=first.end(); ++it)
 		std::cout << ' ' << *it;

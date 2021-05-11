@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 10:48:01 by chgilber          #+#    #+#             */
-/*   Updated: 2021/04/14 13:08:35 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/05/06 16:50:29 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ _value(NULL)
 			}
 			const_iterator	begin() const
 			{
-				return (iterator(_value));
+				return (const_iterator(_value));
 			}
 
 
@@ -157,7 +157,7 @@ _value(NULL)
 			}
 			const_iterator	end() const
 			{
-				return iterator(_value + _n);
+				return const_iterator(_value + _n);
 			}
 
 

@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 09:02:17 by chgilber          #+#    #+#             */
-/*   Updated: 2021/04/26 14:44:07 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/05/07 09:40:38 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ int main(int argc, const char *argv[])
 {
 	(void)argv;
 	(void)argc;
-	MODE::list<int>	lst(4, 12);
+	MODE::list<int>	lst(4, 17);
+	MODE::list<int>	lst2;
 
-//	MODE::list<int>	lst2(4, 12);
-//	lst.push_back(16);
-//	lst.push_back(150);
-//	lst.push_back(-1);
-	MODE::list<int>::iterator		ite = lst.begin();
+	lst.insert(lst.begin(), 3, 150);
+	lst2.push_back(777);
+//	int i = 0;
+
+//	MODE::list<int>::iterator		ite = lst.begin();
 
 	for (MODE::list<int>::iterator it = lst.begin(); it != lst.end(); it++)
 		std::cout << *it << "\t";
