@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 10:48:01 by chgilber          #+#    #+#             */
-/*   Updated: 2021/05/11 18:04:14 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/05/20 17:35:43 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,101 @@ namespace ft
 						find = find->next;
 					return (find);
 				}
+
+				void	connected(l_list<T> *in, l_list<T> *tmp)
+				{
+			//	std::cout << "in bef = " << in->bef->value;
+			//		std::cout << " / in bef next = " << in->bef->next->value;
+			//		std::cout << " / in next bef = " << in->next->bef->value;
+			//		std::cout << " / in  next = " << in->next->value;
+			//	std::cout << " / in bef nextnext = " << in->bef->next->next->value << std::endl;
+			//		std::cout << "tmp bef insade= " << tmp->bef << std::endl;
+			//		std::cout << "tmp next insade= " << tmp->next << std::endl;
+	//				std::cout << "tmp next next insade= " << tmp->next->next->value << std::endl;
+			//		std::cout << "end= " << _end << std::endl;
+	//					std::cout << "start next = " << _start->next->value << std::endl;
+	//					std::cout << "start = " << _start->value << std::endl;
+	//					std::cout << "tmp = " << tmp->value << std::endl;
+			//			std::cout << "tmp = " << tmp << std::endl;
+			//			std::cout << "start = " << _start << std::endl;
+					if (_n == 0)
+					{
+						_end->bef = in;
+					}
+					in->next = tmp;
+					in->bef = tmp->bef;
+					tmp->bef->next = in;
+					tmp->bef->next->next = tmp;
+					tmp->next->bef = in;
+					tmp->bef = in;
+					//	in->next->bef = in->bef;
+					if (_start == tmp)
+					{
+						in->bef = _end;
+					}
+					else
+					{
+						in->bef->next = in;
+						in->next->bef = in;
+					}
+				//	std::cout << "in  next = " << in->next->value << std::endl;
+				//	std::cout << "in  bef = " << in->bef->value << std::endl;
+					if (_start == tmp)
+					{
+						_start = in;
+					}
+						//			std::cout << "sstatrt bef val = " << _start->bef->value << std::endl;
+	//			std::cout << "start val = " << _start->value << std::endl;
+	//			std::cout << "start  next val = " << _start->next->value << std::endl;
+
+				}
+				void	printer(iterator pos)
+				{
+				l_list<T>	*tmpi = find(pos);
+	//			std::cout << "start val = " << _start->value << std::endl;
+	//			std::cout << "start bef val = " << _start->bef->value << std::endl;
+	//			std::cout << "end  val = " << _end->value << std::endl;
+	//			std::cout << "end bef val = " << _end->bef->value << std::endl;
+	//			std::cout << "end next val = " << _end->next->value << std::endl;
+				std::cout << "tmpi bef val = " << tmpi->bef->value << std::endl;
+				std::cout << "tmpi  val = " << tmpi->value << std::endl;
+				std::cout << "tmpi next val = " << tmpi->next->value << std::endl;
+				std::cout << "tmpi next nxt val = " << tmpi->next->next->value << std::endl;
+				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->value << std::endl;
+				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->value << std::endl;
+				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->next->value << std::endl;
+				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->next->next->value << std::endl;
+				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->next->next->next->value << std::endl;
+				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->next->next->next->next->value << std::endl;
+				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->next->next->next->next->next->value << std::endl;
+				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->next->next->next->next->next->next->value << std::endl;
+				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->next->next->next->next->next->next->next->value << std::endl;
+				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->next->next->next->next->next->next->next->next->value << std::endl;
+				std::cout << "size = " << _n << std::endl;
+		//		for (iterator it = begin(); it != end(); it++)
+		//			std::cout << "it  = " << *it << std::endl;
+				}
+				void	printer(iterator pos, list &x)
+				{
+				std::cout << "start val = " << x._start->value << std::endl;
+				std::cout << "start val next = " << x._start->next->value << std::endl;
+				l_list<T>	*tmp = x.find(pos);
+				std::cout << "tmp bef val = " << tmp->bef->value << std::endl;
+				std::cout << "tmp  val = " << tmp->value << std::endl;
+				std::cout << "tmp next val = " << tmp->next->value << std::endl;
+				std::cout << "tmp next nxt val = " << tmp->next->next->value << std::endl;
+				std::cout << "tmp next nxt val = " << tmp->next->next->next->value << std::endl;
+				std::cout << "tmp next nxt val = " << tmp->next->next->next->next->value << std::endl;
+				std::cout << "tmp next nxt val = " << tmp->next->next->next->next->next->value << std::endl;
+				std::cout << "tmp next nxt val = " << tmp->next->next->next->next->next->next->value << std::endl;
+				std::cout << "tmp next nxt val = " << tmp->next->next->next->next->next->next->next->value << std::endl;
+				std::cout << "tmp next nxt val = " << tmp->next->next->next->next->next->next->next->next->value << std::endl;
+				std::cout << "tmp next nxt val = " << tmp->next->next->next->next->next->next->next->next->next->value << std::endl;
+				std::cout << "tmp next nxt val = " << tmp->next->next->next->next->next->next->next->next->next->next->value << std::endl;
+				std::cout << "tmp next nxt val = " << tmp->next->next->next->next->next->next->next->next->next->next->next->value << std::endl;
+				std::cout << "tmp next nxt val = " << tmp->next->next->next->next->next->next->next->next->next->next->next->next->value << std::endl;
+				}
+
 
 			public:
 			//construteur par defaut
@@ -251,6 +346,7 @@ namespace ft
 					in->bef->next = in;
 				if (tmp == _start)
 					_start = in;
+				_end->value = _n + 1;
 				_n++;
 				return pos;
 			}
@@ -346,6 +442,7 @@ namespace ft
 					_start->value = val;
 					_start->next = _end;
 					_start->bef = _end;
+					_end->value = _n + 1;
 					_n++;
 					return ;
 			//		return (void)insert(begin(), val);
@@ -359,6 +456,7 @@ namespace ft
 					_end = add;
 					_end->value = _n + 1;
 					_end->next = _start;
+					_start->bef = _end;
 					_n++;
 				}
 			}
@@ -509,63 +607,85 @@ namespace ft
 			}
 			void		splice(iterator pos, list &x)
 			{
-				l_list<T>	*tmp = find(pos);
-				x._end->bef->next = tmp;
-				tmp->bef->next = x._start;
-				_n = _n + x._n;
-			/*				l_list<T>	*tmpi = find(pos);
-				std::cout << "end val = " << *end() << std::endl;
-				std::cout << "start val = " << *begin() << std::endl;
-				std::cout << "tmpi bef val = " << tmpi->bef->value << std::endl;
-				std::cout << "tmpi  val = " << tmpi->value << std::endl;
-				std::cout << "tmpi next val = " << tmpi->next->value << std::endl;
-				std::cout << "tmpi next nxt val = " << tmpi->next->next->value << std::endl;
-				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->value << std::endl;
-				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->value << std::endl;
-				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->next->value << std::endl;
-				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->next->next->value << std::endl;
-				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->next->next->next->value << std::endl;
-				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->next->next->next->next->value << std::endl;
-				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->next->next->next->next->next->value << std::endl;
-				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->next->next->next->next->next->next->value << std::endl;
-				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->next->next->next->next->next->next->next->value << std::endl;
-				std::cout << "tmpi next nxt val = " << tmpi->next->next->next->next->next->next->next->next->next->next->next->next->value << std::endl;
-*/				x._start = x._end;
-				x._start->next = x._end;
-				x._start->bef = x._end;
-				x._end->bef = x._start;
-				x._end->next = x._start;
-			//	x.clear();
-				x._n = 0;
-		//		x.init();
+				iterator it = x.begin();
+				while (it != x.end())
+				{
+					it = x.begin();
+					splice(pos, x, it);
+					if (it == x.end())
+						return;
+				}
 			}
 			void		splice(iterator pos, list &x, iterator i)
 			{
-				l_list<T>	*tmp = x.find(pos);
-				l_list<T>	*add = x.find(i);
-				std::cout << "start val = " << _start->value << std::endl;
-				std::cout << "tmp  val = " << tmp->value << std::endl;
-				std::cout << "add  val = " << add->value << std::endl;
-				std::cout << "tmp bef val = " << tmp->bef->value << std::endl;
-				std::cout << "add bef val = " << add->bef->value << std::endl;
+				l_list<T>	*tmp = find(pos);
+				l_list<T>	*add =	x.find(i);
 
-			/*	if (_n == 0)
+		//		std::cout << "add  val = " << add->value << std::endl;
+		//			std::cout << "tmp bef bef = " << tmp->bef->bef->value;
+		//		std::cout << " / tmp bef = " << tmp->bef->value;
+		//		std::cout << " / tmp = " << tmp->value;
+		//			std::cout << " / tmp next = " << tmp->next->value << std::endl;
+				if (i == x.begin())
 				{
-					_start = add;
-					_start->next = _end;
-					_start->bef = _end;
-					_end = add;
+					x._start = add->next;
+					x._start->next = add->next->next;
+			//		std::cout << "i = xbegin add next next " << add->next->next->value << std::endl;
+		//			std::cout << "i = xbegin start next " << x._start->next->value << std::endl;
+					if (i == x.end())
+					{
+						x._start = x._end;
+				//		x._end = x._start;
+			//			std::cout << "start" << x._start->value << std::endl;
+				//		std::cout << "endt" << x._end << std::endl;
+				//		std::cout << "start" << x._start << std::endl;
+				//		std::cout << "endt" << x._end->value << std::endl;
+				// 		std::cout << "endt bef" << x._end->bef->value << std::endl;
+						return ;
+					}
 				}
-			*/	tmp->next = add;
-			///	tmp->next->bef = add;
-			///	tmp->bef->next = add;
-				add->bef->next = add->next;
-				add->next->bef = add->bef;
-				std::cout << "lenght " << _n << " et x " << x._n << std::endl; 
-				_n++;
-				x._n--;;
-			}
+				else
+				{
+		//		std::cout << "in bef  = " << add->bef->value << std::endl;
+		//		std::cout << "in bef next = " << add->bef->next->value << std::endl;
+		//			std::cout << "in next bef = " << add->next->bef->value << std::endl;
+					add->next->bef = add->bef;
+					add->bef->next = add->next;
+		//		std::cout << "in bef = " << add->bef->value << std::endl;
+		//			std::cout << "in bef next = " << add->bef->next->value << std::endl;
+		//		std::cout << "in bef next x 2 = " << add->bef->next->next->value << std::endl;
+		//			std::cout << "in next bef = " << add->next->bef->value << std::endl;
+				}
+			//	std::cout << "2 start next " << x._start->next->value << std::endl;
+		//		std::cout << "CONECTED  ---  add next " << add->next->value << std::endl;
+				connected(add,tmp);
+								_n++;
+				x._n--;
+				_end->value = _n;
+				x._end->value = x._n;
+			//	printer(i);
 
+		//		std::cout << "FINNNN  ---  add next " << add->next->value << std::endl;
+		//		std::cout << "in bef = " << add->bef->value;
+		//			std::cout << " / in bef next = " << add->bef->next->value;
+		//			std::cout << " / in next bef = " << add->next->bef->value;
+		//		std::cout << " / in bef next x 2 = " << add->bef->next->next->value << std::endl;
+		//		std::cout << " x end bef   = " << x._end->bef->value << std::endl;
+
+			}
+			void		splice(iterator pos, list &x, iterator first, iterator last)
+			{
+				int size = 1;
+
+				for (iterator	ite = first; ite != last; ite++)
+					size++;
+				iterator	t = first;
+				for (int i = 0; i  < size; i++)
+				{
+					splice(pos, x, t);
+					t++;
+				}
+			}
 
 			void	swap(list &x)
 			{

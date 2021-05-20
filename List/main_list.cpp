@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 13:16:08 by chgilber          #+#    #+#             */
-/*   Updated: 2021/05/11 18:02:20 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/05/20 17:34:22 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -455,6 +455,7 @@ int main(int argc, const char *argv[])
 	ite++;
 	ite++;
 	lst1.splice(ite, lst2);
+	std::cout << "\nfinis\n";
 	std::cout << std::endl;
 	std::cout << "lst1 value after splice with it point to 3 :\nlst1 : ";
 	for (MODE::list<int>::iterator it = lst1.begin(); it != lst1.end(); ++it)
@@ -465,16 +466,26 @@ int main(int argc, const char *argv[])
 		std::cout << ' ' << *it;;
 	std::cout << std::endl << std::endl;
 	std::cout << "Splice value 3 in lst1 to lst2\n";
+
+//	lst2.push_back(47);
+//	lst2.push_back(45);
 	lst2.splice (lst2.begin(), lst1, ite);
 	std::cout << "lst1 value after splice with it point to 3 :\nlst1 : ";
 	for (MODE::list<int>::iterator it = lst1.begin(); it != lst1.end(); ++it)
 		std::cout << ' ' << *it;
+//	ite = lst1.begin();
+
+//	for (int i = 0; i < 21; i++)
+//	{
+//		std::cout << ' ' << *ite;
+//		ite++;
+//	}
 	std::cout << std::endl;
 	std::cout << "lst2 value after splice :\nlst2 : ";
 	for (MODE::list<int>::iterator it = lst2.begin(); it != lst2.end(); ++it)
 		std::cout << ' ' << *it;;
 	std::cout << std::endl << std::endl;
-}/*	lst1.clear();
+	lst1.clear();
 	lst1.push_back(1);
 	lst1.push_back(10);
 	lst1.push_back(20);
@@ -488,8 +499,18 @@ int main(int argc, const char *argv[])
 	for (MODE::list<int>::iterator it = lst1.begin(); it != lst1.end(); ++it)
 		std::cout << ' ' << *it;
 	std::cout << '\n';
+	std::cout << "mylist2 contains:";
+	for (ite = lst2.begin(); ite != lst2.end(); ++ite)
+		std::cout << ' ' << *ite;
+	std::cout << '\n';
+	ite = lst1.begin();
+	for (int i = 0; i < 3; i++)
+		ite++;
+
 	std::cout << "Ite pointe on value " << *ite << " of lst1\n";
-	lst2.splice (lst2.begin(), lst1, lst1.begin(), ite);
+	lst2.splice (lst2.begin(), lst1, ite);
+//	lst2.splice (lst2.begin(), lst1, ite);
+//	lst2.splice (lst2.begin(), lst1, lst1.begin(), ite);
 //	1 10 20 30 3 4
 //	lst1.splice(lst1.begin(), lst1, ite, lst1.end());
 //	lst1.insert(lst1.begin(), 12);
@@ -560,7 +581,7 @@ int main(int argc, const char *argv[])
 	std::cout << " size = " << lst2.size();
 	std::cout << '\n';
 }
-
+/*
 {
 	std::cout << "\nTest with unique\n\n";
 
