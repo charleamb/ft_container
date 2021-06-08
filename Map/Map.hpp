@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 10:48:01 by chgilber          #+#    #+#             */
-/*   Updated: 2021/05/28 18:57:18 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/06/08 15:40:52 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,25 @@
 #include "Reverse_Bidirectional_iterator.hpp"
 # define RBI Reverse_Bidirectional_Iterator
 # define BI Bidirectional_Iterator
+/*
+&
+&&
+*/
+
 namespace ft
 {
 template <class Key,                                      // map::key_type
            class T,                                       // map::mapped_type
            class Compare = less<Key>,                     // map::key_compare
-           class Alloc = std::allocator<Pair<const Key,T> >    // map::allocator_type
+           class Alloc = std::allocator<pair<const Key,T> >    // map::allocator_type
            > class map
 		{
 		public:
 			typedef Key									key_type;
 			typedef T									mapped_type;
-			typedef Pair<const Key, T>					value_type;
+			typedef pair<const Key, T>					value_type;
 			typedef	Compare								key_compare;
-	//		typedef value_comp()						value_compare;
+//			typedef value_comp()						value_compare;
 			typedef Alloc								allocator_type;
 			typedef T									&reference;
 			typedef const T								&const_reference;
@@ -47,27 +52,175 @@ template <class Key,                                      // map::key_type
 			typedef const RBI <value_type>				reverse_const_iterator;
 			typedef	ptrdiff_t							difference_type;
 			typedef	size_t								size_type;
+			class value_compare : std::binary_function<value_type, value_type, bool>
+			{
+				public :
+						bool operator()(const value_type &x, const value_type &y) const
+						{
+							return _comp(x.first, y.first);
+						}
+
+				private:
+						Compare _comp;
+						value_compare(Compare c)
+						{
+							_comp = c;
+						}
+						friend class map;
+			};
 		private:
 			
-			key_compare		_key_compare;
-			allocator_type	_alloc;
-			size_type		_n;
-			value_type		_key;
-			value_type		_top;
-			value_type		_bot;
+			typedef	Mapnode<value_type>		Mapnode;
+			key_compare						_key_compare;
+			allocator_type					_alloc;
+			size_type						_n;
+			Mapnode							*_top;
+			Mapnode							*_lower;
+			Mapnode							*_upper;
+			
+			void	init()
+			{
+				_top = NULL;
+				_lower = NULL;
+				_upper = NULL;
+				_n = 0;
+			}
+
+			Mapnode		*findmn(iterator	pos)
+			{
+				Mapnode	*find = _lower;
+
+					for (iterator it = begin(); it != pos && it != end(); it++)
+					{
+						if (find->right)
+						{
+							find = find->right;
+							while (find->left)
+								find = find->left;
+						}
+						else
+						{
+							Mapnode	*tmp = find;
+							find = find->parent;
+							while (find->parent && tmp == find->right)
+							{
+								tmp = find;
+								find = find->parent;
+							}
+						}
+					}
+					return (find);
+			}
 
 			void	print()
 			{
+				int leaf = _lower->elem.first;
+				int left = 0;
+				int leftl = 0;
+				int leftr = 0;
+				int right = 0;
+				int rightr = 0;
+				int rightl = 0;
+				iterator	branch = begin();
+				std::cout << "--------Key print tree-------" << std::endl;
+				for (int i = 0; i < (5); i++)
+					std::cout << "\t";
+				std::cout << "[" << (int)_top->elem.first << "]" << std::endl;
+				// ligne 2
+				if (_n > 1)
+				{
+				for (int i = 0; i < (3); i++)
+					std::cout << "\t";
+				std::cout << "[" << (_top->left ? _top->left->elem.first : -42)  << "]";
+				left = (_top->left ? _top->left->elem.first : 0);
+				for (int i = 0; i < (4); i++)
+					std::cout << "\t";
+				std::cout << "[" << (_top->right ? _top->right->elem.first : -42)  << "]";
+				right = (_top->right ? _top->right->elem.first : 0);
+				std::cout << std::endl;
+				}
+				//ligne 3
+				if (_n > 3)
+				{
+				for (int i = 0; i < (2); i++)
+					std::cout << "\t";
+				std::cout << "[" << (left && _top->left->left ? _top->left->left->elem.first : -42)  << "]";
+				leftl =  (left && _top->left->left ? _top->left->left->elem.first : 0);
+				for (int i = 0; i < (2); i++)
+					std::cout << "\t";
+				std::cout << "[" << (left && _top->left->right ? _top->left->right->elem.first : -42)  << "]";
+				leftr = (left && _top->left->right ? _top->left->right->elem.first :0);
+				for (int i = 0; i < (2); i++)
+					std::cout << "\t";
+				std::cout << "[" << (right && _top->right->left ? _top->right->left->elem.first : -42)  << "]";
+				rightl =  (right && _top->right->left ? _top->right->left->elem.first :0);
+				for (int i = 0; i < (2); i++)
+					std::cout << "\t";
+				std::cout << "[" << (right && _top->right->right? _top->right->right->elem.first : -42)  << "]";
+				rightr = (right && _top->right->right? _top->right->right->elem.first :0);
+				std::cout << std::endl;
+				}
+				//ligne 4
+				if ( _n > 7)
+				{
+				std::cout << "          ";
+				std::cout << "[" << (leftl && _top->left->left->left ? _top->left->left->left->elem.first : -42)  << "]";
+				std::cout << "      ";
+				std::cout << "[" << (leftl && _top->left->left->right ? _top->left->left->right->elem.first : -42)  << "]";
+				std::cout << "    ";
+				std::cout << "[" << (leftr && _top->left->right->left ? _top->left->right->left->elem.first : -42)  << "]";
+				std::cout << "     ";
+				std::cout << "[" << (leftr && _top->left->right->right ? _top->left->right->right->elem.first : -42)  << "]";
+				std::cout << "    ";
+				std::cout << "[" << (rightl && _top->right->left->left ? _top->right->left->left->elem.first : -42)  << "]";
+				std::cout << "     ";
+				std::cout << "[" << (rightl && _top->right->left->right ? _top->right->left->right->elem.first : -42)  << "]";
+				std::cout << "    ";
+				std::cout << "[" << (rightr && _top->right->right->left ? _top->right->right->left->elem.first : -42)  << "]";
+				std::cout << "     ";
+				std::cout << "[" << (rightr && _top->right->right->right ? _top->right->right->right->elem.first : -42)  << "]";
+				std::cout << std::endl;
+				//ligne 5
+				}
+				if (_n > 15)
+				{
+				std::cout << "   ";
+				std::cout << "[" << leaf << "]";
+				std::cout << "      ";
+				std::cout << "[" << leaf << "]";
+				std::cout << "[" << leaf << "]";
+				std::cout << "|";
+				std::cout << "[" << leaf << "]";
+				std::cout << "[" << leaf << "]";
+				std::cout << "|";
+				std::cout << "[" << leaf << "]";
+				std::cout << "[" << leaf << "]";
+				std::cout << "|";
+				std::cout << "[" << leaf << "]";
+				std::cout << "[" << leaf << "]";
+				std::cout << "[" << leaf << "]";
+				std::cout << "|";
+				std::cout << "[" << leaf << "]";
+				std::cout << "[" << leaf << "]";
+				std::cout << "|";
+				std::cout << "[" << leaf << "]";
+				std::cout << "[" << leaf << "]";
+				std::cout << "|";
+				std::cout << "[" << leaf << "]";
+				std::cout << "[" << leaf << "]" << std::endl;
+				}
 			}
 		public:
 			//construteur par defaut
 			map(const key_compare &comp = key_compare(),
-				const allocator_type &a = allocator_type()): _alloc(a), _key_compare(comp)
+				const allocator_type &a = allocator_type()): _key_compare(comp), _alloc(a)
 			{
+				init();
 			}
 			//construteur copy
 			map(const map &copy): _alloc(copy._alloc), _key_compare(copy._comp)
 			{
+				init();
 				iterator	it = copy.begin();
 				for (size_t i = 0; i < copy._n; i++)
 				{
@@ -82,6 +235,7 @@ template <class Key,                                      // map::key_type
 					const allocator_type &a = allocator_type(),
 					typename InputIt::difference_type * = NULL): _alloc(a), _key_compare(comp), _n(0)
 				{
+					init();
 					while (first != last)
 					{
 						insert(*first);
@@ -98,22 +252,24 @@ template <class Key,                                      // map::key_type
 			//function map in alpha order
 			iterator		begin()
 			{
-				return (iterator(_top));
+				return (iterator(_lower));
 			}
 			const_iterator	begin() const
 			{
-				return (const_iterator(_top));
+				return (const_iterator(_lower));
 			}
 
 			void	clear()
 			{
 					erase(begin(), end());
+								//	if (_upper)
+				//		delete _upper;
 			}
 			
 			size_type	count(const key_type &k) const
 			{
 				(void)k;
-				return ;
+				return  _n;
 			}
 
 			bool	empty() const
@@ -123,24 +279,99 @@ template <class Key,                                      // map::key_type
 
 			iterator		end()
 			{
-				return iterator(_bot);
+				return iterator(_upper);
 			}
 			const_iterator	end() const
 			{
-				return const_iterator(_bot);
+				return const_iterator(_upper);
 			}
 			
-			Pair<const_iterator, const_iterator>	equal_range(const key_type &k) const
+			pair<const_iterator, const_iterator>	equal_range(const key_type &k) const
 			{
 				(void)k;
 			}
-			Pair<iterator, iterator>	equal_range(const key_type &k)
+			pair<iterator, iterator>	equal_range(const key_type &k)
 			{
 				(void)k;
 			}
 
 			iterator	erase(iterator position)
 			{
+				Mapnode		*delet = findmn(position);
+				if (_n > 0)
+				{
+	std::cout << "delet = {" << (int)delet->elem.first << "}" << std::endl;
+					if (delet == _top)
+					{
+				//	delete _top;
+						if (delet->left && delet->right && delet->left->right)
+						{
+							Mapnode		*_ptr = delet->left;
+							while (_ptr->right)
+								_ptr = _ptr->right;
+							_ptr->right = delet->right;
+							_ptr->left = delet->left;
+							_top = _ptr;
+							_top->parent = NULL;
+	std::cout << "2" << std::endl;
+						}
+						else if (delet->left && !delet->right)
+						{
+							_top = delet->left;
+							_top->parent = NULL;
+	std::cout << "3" << std::endl;
+						}
+						else if (!delet->left && delet->right)
+						{
+							_top = delet->right;
+							_top->parent = NULL;
+	std::cout << "4" << std::endl;
+						}
+					}
+					else if (delet->left)
+					{
+	std::cout << "delet->left = {" << (int)delet->left->elem.first << "}" << std::endl;
+
+						if (delet->right)
+						{
+	std::cout << "insade delet->right = {" << (int)delet->right->elem.first << "}" << std::endl;
+							delet->right->parent = delet->left;
+							delet->left->right = delet->right;
+						//	delet->right->parent = delet->left;
+						}
+						delet->left->parent = delet->parent;
+				//		delet->parent->left = NULL;
+					}
+					else if (delet->right)
+					{
+	std::cout << "only delet->right = {" << (int)delet->right->elem.first << "}" << std::endl;
+						delet->right->parent = delet->parent;
+	std::cout << "delet->right->parent = {" << (int)delet->right->parent->elem.first << "}" << std::endl;
+						delet->parent->left = delet->right;
+	std::cout << "delet->parent->left = {" << (int)delet->parent->left->elem.first << "}" << std::endl;
+				//		delet->parent->right = NULL;
+					}
+					if (delet == _lower)
+					{
+	std::cout << "in lower = {" << (int)delet->elem.first << "}" << std::endl;
+	std::cout << "in lower  lower= {" << (int)_lower->elem.first << "}" << std::endl;
+						if (delet->parent)
+							delet->parent->left = NULL;
+						if (delet->right)
+						{
+							Mapnode		*_ptr = delet->right;
+							while (_ptr->left)
+								_ptr = _ptr->left;
+							_lower =  _ptr;
+						}
+						else
+							_lower = ((delet == _top) ? _top : delet->parent);
+		std::cout << " after in lower  lower= {" << (int)_lower->elem.first << "}" << std::endl;
+					}
+					delete delet;
+					delet = NULL;
+					_n--;
+			}
 				return position;
 			}
 			size_type	erase(const key_type &k)
@@ -151,12 +382,25 @@ template <class Key,                                      // map::key_type
 			iterator	erase(iterator first, iterator last)
 			{
 				iterator		tmp = first;
+				int i = 0;
+		//		(void)last;
+				std::cout << "lower = {" << (int)_lower->elem.first << "}" << std::endl;
+				std::cout << "upper = {" << (int)_upper->elem.first << "}" << std::endl;
 				while (first != last)
+		//		while (i < 8)
 				{
 					tmp++;
 					erase(first);
+					print();
+					std::cout << std::endl;
+					std::cout << std::endl;
+					std::cout << std::endl;
+
 					first = tmp;
+					i++;
 				}
+				if (_lower == findmn(first))
+						delete _lower;
 				return first;
 			}
 
@@ -174,9 +418,83 @@ template <class Key,                                      // map::key_type
 				return _alloc;
 			}
 			
-			Pair<iterator, bool>	insert(const value_type &val)
+			pair<iterator, bool>	insert(const value_type &val)
 			{
-				(void)val;
+				Mapnode		*node = _top;
+				Mapnode		*leaf = NULL;
+				if (_n == 0)
+				{
+					_top = new Mapnode(val);
+					_upper = _top;
+					_lower = _top;
+				}
+				else if (_top == _lower && 	value_comp()(val, node->elem))
+				{
+					leaf = new Mapnode(val, _top);
+						_top->left = leaf;
+						_lower = leaf;
+				}
+				else if (_top == _upper && 	!value_comp()(val, node->elem))
+				{
+					leaf = new Mapnode(val, _top);
+						_top->right = leaf;
+						_upper = leaf;
+				}
+				else
+				{
+					for (size_type i = 0; i < _n; i++)
+					{
+						if (node->elem.first == val.first)
+						{
+							node->elem.second = val.second;
+							return (make_pair(iterator(node), false));
+						}
+						if (value_comp()(val, node->elem))
+						{
+							if (node->left)
+								node = node->left;
+							else
+							{
+								leaf =	new Mapnode(val, node);
+								if (node == _lower)
+								{
+									_lower->left = leaf;
+									_lower = leaf;
+								//	_lower->left = leaf;
+								//	leaf->left = _lower;
+									std::cout << "lowe " << _lower->elem.first << std::endl;
+								//	std::cout << "left de lower " << _lower->left->elem.first << std::endl;
+								}
+								node->left = leaf;
+								break;
+							}
+						}
+						else
+						{
+							if (node->right)
+							{
+								node = node->right;
+							}
+							else
+							{
+								leaf = new Mapnode(val, node);
+								if (node == _upper)
+								{
+									std::cout << "im nodeide " << _upper->parent->elem.second << std::endl;
+									_upper->right = leaf;
+									_upper = leaf;
+								//	leaf->right = _upper;
+								}
+								node->right = leaf;
+								break;
+							}
+						}
+					}
+				}
+					_n++;
+				std::cout << "print?" << std::endl;
+				print();
+				return make_pair(iterator(leaf), true);
 			}
 			iterator		insert(iterator pos, const value_type &val)
 			{
@@ -211,7 +529,7 @@ template <class Key,                                      // map::key_type
 
 			size_type			max_size(void) const
 			{
-				return (ULONG_MAX / sizeof(l_map<T>));
+				return (ULONG_MAX / sizeof(Mapnode));
 			}
 
 					//constuteur = / []
@@ -224,25 +542,25 @@ template <class Key,                                      // map::key_type
 			}
 			mapped_type	&operator[](const key_type &k)
 			{
-				return ((*((insert(make_Pair(k, mapped_type()))).first)).second)
+				return ((*((insert(make_pair(k, mapped_type()))).first)).second);
 			}
 
 			reverse_iterator		rbegin()
 			{
-				return reverse_iterator(_bot);
+				return reverse_iterator(_upper);
 			}
 			reverse_const_iterator	rbegin() const
 			{
-				return reverse_iterator(_bot);
+				return reverse_iterator(_upper);
 			}
 
 			reverse_iterator		rend()
 			{
-				return reverse_iterator(_top);
+				return reverse_iterator(_lower);
 			}
 			reverse_const_iterator	rend() const
 			{
-				return reverse_iterator(_top);
+				return reverse_iterator(_lower);
 			}
 			
 			size_type	size() const
@@ -264,11 +582,12 @@ template <class Key,                                      // map::key_type
 				(void)k;
 			}
 
-			value_compare	value_comp()
+			value_compare	value_comp() const
 			{
+				return(value_compare(_key_compare));
 			}
 
-			};
+};
 /*	template <class T, class Alloc>
 		bool		operator==(const map<T,Alloc>& lhs, const map<T,Alloc>& rhs)
 		{
@@ -329,4 +648,5 @@ template <class Key,                                      // map::key_type
 			x.swap(y);
 		}
 }*/
+}
 #endif

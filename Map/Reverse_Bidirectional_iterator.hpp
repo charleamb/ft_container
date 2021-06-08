@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 18:29:35 by chgilber          #+#    #+#             */
-/*   Updated: 2021/04/16 18:02:32 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/06/04 17:01:25 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,16 @@ namespace ft
 			typedef size_t								size_type;
 
 		private:
-			l_list<T>										*_ptr;
+			typedef	Mapnode<T>						node;
+			node										*_ptr;
 			typedef Reverse_Bidirectional_Iterator			self;
 
 		public:
-			Reverse_Bidirectional_Iterator() {}
+			Reverse_Bidirectional_Iterator(): _ptr(NULL) {}
 
-			Reverse_Bidirectional_Iterator(l_list<T> *other): _ptr(other) {}
+			Reverse_Bidirectional_Iterator(node *other): _ptr(other) {}
 
-			Reverse_Bidirectional_Iterator(Reverse_Bidirectional_Iterator *other)
-			{
-				this->_ptr = other->_ptr;
-			}
+			Reverse_Bidirectional_Iterator(self *other) :_ptr(other->_ptr) {}
 
 			~Reverse_Bidirectional_Iterator() {}
 
@@ -55,25 +53,69 @@ namespace ft
 			//crementation
 			self	operator++()
 			{
-				_ptr = _ptr->bef;
+				if (_ptr->left)
+				{
+					_ptr = _ptr->left;
+					while (_ptr->right)
+						_ptr = _ptr->right;
+				}
+				else if (_ptr->parent)
+						_ptr = _ptr->parent;
 				return *this;
 			}
 			self	operator++(int)
 			{
 				self	tmp = *this;
-				_ptr = _ptr->bef;
+				if (_ptr->left)
+				{
+					_ptr = _ptr->left;
+					while (_ptr->right)
+						_ptr = _ptr->right;
+				}
+				else if (_ptr->parent)
+						_ptr = _ptr->parent;
 				return tmp;
 			}
 
 			self	operator--()
 			{
-				_ptr = _ptr->next;
+				if (_ptr->right)
+				{
+					_ptr = _ptr->right;
+					while (_ptr->left)
+						_ptr = _ptr->left;
+				}
+				else
+				{
+					node	*tmp = _ptr;
+					_ptr = _ptr->parent;
+					while (_ptr->parent && tmp == _ptr->right)
+					{
+						tmp = _ptr;
+						_ptr = _ptr->parent;
+					}
+				}
 				return *this;
 			}
 			self	operator--(int)
 			{
 				self	tmp = *this;
-				_ptr = _ptr->next;
+				if (_ptr->right)
+				{
+					_ptr = _ptr->right;
+					while (_ptr->left)
+						_ptr = _ptr->left;
+				}
+				else
+				{
+					node	*tmp = _ptr;
+					_ptr = _ptr->parent;
+					while (_ptr->parent && tmp == _ptr->right)
+					{
+						tmp = _ptr;
+						_ptr = _ptr->parent;
+					}
+				}
 				return tmp;
 			}
 			//bool
@@ -86,19 +128,14 @@ namespace ft
 				return (_ptr != other._ptr);
 			}
 			//reference and pointer
-			reference	operator*()
+			value_type	operator*()
 			{
-				return _ptr->value;
+				return _ptr->elem;
 			}
 
-			const_reference	operator*()const
+			pointer	operator->()
 			{
-				return _ptr->value;
-			}
-
-			reference	operator->()
-			{
-				return &_ptr->value;
+				return &_ptr->elem;
 			}
 	};
 }

@@ -6,26 +6,19 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 18:29:35 by chgilber          #+#    #+#             */
-/*   Updated: 2021/04/19 07:38:29 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/06/04 17:00:48 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BIDIRECTIONAL_ITERATOR_HPP
 # define BIDIRECTIONAL_ITERATOR_HPP
 
+#include "utils.hpp"
 #include <iostream>
 #include <cstddef> //ptrdiff_t
 
 namespace ft
 {
-template <typename T>
-struct	l_list
-{
-	T				value;
-	l_list			*next;
-	l_list			*bef;
-};//				l_list;
-
 	template <typename T>
 	class Bidirectional_Iterator
 	{
@@ -40,18 +33,16 @@ struct	l_list
 			
 		private:
 			
-			l_list<T>								*_ptr;
+			typedef	Mapnode<T>						node;
+			node									*_ptr;
 			typedef Bidirectional_Iterator			self;
 
 		public:
-			Bidirectional_Iterator() {}
+			Bidirectional_Iterator(): _ptr(NULL) {}
 
-			Bidirectional_Iterator(l_list<T> *other): _ptr(other) {}
+			Bidirectional_Iterator(node *other): _ptr(other) {}
 
-			Bidirectional_Iterator(Bidirectional_Iterator *other)
-			{
-				this->_ptr = other->_ptr;
-			}
+			Bidirectional_Iterator(self *other): _ptr(other->_ptr) {}
 
 			~Bidirectional_Iterator() {}
 
@@ -63,25 +54,61 @@ struct	l_list
 			//crementation
 			self	operator++()
 			{
-				_ptr = _ptr->next;
+				if (_ptr->right)
+				{
+					_ptr = _ptr->right;
+					while (_ptr->left)
+						_ptr = _ptr->left;
+				}
+				else
+				{
+					node	*tmp = _ptr;
+					_ptr = _ptr->parent;
+					while (_ptr->parent && tmp == _ptr->right)
+					{
+						tmp = _ptr;
+						_ptr = _ptr->parent;
+					}
+				}
 				return *this;
 			}
 			self	operator++(int)
 			{
 				self	tmp = *this;
-				_ptr = _ptr->next;
+				if (_ptr->right)
+				{
+					_ptr = _ptr->right;
+					while (_ptr->left)
+						_ptr = _ptr->left;
+				}
+				else if (_ptr->parent)
+						_ptr = _ptr->parent;
 				return tmp;
 			}
 
 			self	operator--()
 			{
-				_ptr = _ptr->bef;
+				if (_ptr->left)
+				{
+					_ptr = _ptr->left;
+					while (_ptr->right)
+						_ptr = _ptr->right;
+				}
+				else if (_ptr->parent)
+						_ptr = _ptr->parent;
 				return *this;
 			}
 			self	operator--(int)
 			{
 				self	tmp = *this;
-				_ptr = _ptr->bef;
+				if (_ptr->left)
+				{
+					_ptr = _ptr->left;
+					while (_ptr->right)
+						_ptr = _ptr->right;
+				}
+				else if (_ptr->parent)
+					_ptr = _ptr->parent;
 				return tmp;
 			}
 			//bool
@@ -94,19 +121,14 @@ struct	l_list
 				return (_ptr != other._ptr);
 			}
 			//reference and pointer
-			reference	operator*()
+			value_type	operator*()
 			{
-				return _ptr->value;
+				return _ptr->elem;
 			}
 
-			const_reference	operator*()const
+			pointer	operator->()
 			{
-				return _ptr->value;
-			}
-
-			reference	operator->()
-			{
-				return &_ptr->value;
+				return &_ptr->elem;
 			}
 	};
 }
