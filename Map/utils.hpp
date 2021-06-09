@@ -6,18 +6,20 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 13:46:54 by chgilber          #+#    #+#             */
-/*   Updated: 2021/06/08 13:54:30 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/06/09 07:35:52 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef	UTILS_HPP
 # define	UTILS_HPP
+
+#include <iostream>
 /*
 &
 &&
 */
-namespace ft
-{
+//namespace ft
+//{
 	template <class T>
 		class Mapnode
 		{
@@ -146,5 +148,5 @@ template <class T1, class T2>
 	}
 
 
-};
+//};
 #endif

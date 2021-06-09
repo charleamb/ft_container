@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 18:29:35 by chgilber          #+#    #+#             */
-/*   Updated: 2021/06/04 17:01:25 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/06/10 00:36:13 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,18 @@ namespace ft
 					while (_ptr->right)
 						_ptr = _ptr->right;
 				}
-				else if (_ptr->parent)
+				else
+				{
+					node	*tmp = _ptr;
+					_ptr = _ptr->parent;
+					while (_ptr->parent && tmp == _ptr->left)
+					{
+						tmp = _ptr;
 						_ptr = _ptr->parent;
+					}
+		//		else if (_ptr->parent)
+		//			_ptr = _ptr->parent;
+				}
 				return *this;
 			}
 			self	operator++(int)
@@ -72,8 +82,18 @@ namespace ft
 					while (_ptr->right)
 						_ptr = _ptr->right;
 				}
-				else if (_ptr->parent)
+				else
+				{
+					node	*tmp = _ptr;
+					_ptr = _ptr->parent;
+					while (_ptr->parent && tmp == _ptr->left)
+					{
+						tmp = _ptr;
 						_ptr = _ptr->parent;
+					}
+		//		else if (_ptr->parent)
+		//			_ptr = _ptr->parent;
+				}
 				return tmp;
 			}
 
