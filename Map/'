@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 18:29:35 by chgilber          #+#    #+#             */
-/*   Updated: 2021/06/10 15:51:14 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/06/10 15:43:01 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ namespace ft
 			//crementation
 			self	operator++()
 			{
-
 				if (_ptr->right)
 				{
 					_ptr = _ptr->right;
@@ -77,6 +76,7 @@ namespace ft
 			{
 				self	tmp = *this;
 
+				 std::cout << " end dady  = [" << (int)_ptr->parent->elem.first << "]"
 				if (_ptr->right)
 				{
 					_ptr = _ptr->right;
@@ -89,7 +89,6 @@ namespace ft
 					_ptr = _ptr->parent;
 					while (_ptr->parent && tmp == _ptr->right)
 					{
-			//	 std::cout << " OPERATOR  = [" << (int)_ptr->parent->elem.first << "]" << std::endl;
 						tmp = _ptr;
 						_ptr = _ptr->parent;
 					}

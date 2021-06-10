@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/18 16:13:09 by lucas             #+#    #+#             */
-/*   Updated: 2021/06/10 00:32:57 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/06/10 18:57:37 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int main ()
 	int								i = 1;
 
 	std::cout << "Test with insert :\n\n";
-	std::cout << "Add ten pair to map :\n";
+	std::cout << "Add ten pair to map and a negative value :\n";
 	while (i <= 10)
 	{
 		std::cout  << "{" << c << "/" << i << "}" << " ";
@@ -92,18 +92,18 @@ int main ()
 			std::cout  << "{" << it->first << "/" << it->second << "}" << " ";
 std::cout << "size " << test2.size() << std::endl;
 }
-/*
+
 {
 	MODE::map<char, int>				test;
 	MODE::map<char, int>				test2;
 	MODE::map<char, int>::iterator	ite;
-	MODE::PAIR<char, int>					p;
+	PAIR<char, int>					p;
 	char	tab[] = "zhmegfncsxd";
 
 	std::cout << "\nTest with insert :\n\n";
 	std::cout << "Add eleven pair to map and key value 'z' :\n";
 
-	system("cat srcs/Map/test/tree.txt");
+	system("cat Map/tree.txt");
 	std::cout << std::endl;
 	for (int i = 0; i < 11; i++)
 	{
@@ -118,11 +118,14 @@ std::cout << "size " << test2.size() << std::endl;
 		std::cout  << "{" << it->first << "/" << it->second << "}" << " ";
 	std::cout << "size " << test.size() << std::endl;
 
+
 	std::cout << "Erase node with one child at head. Value 'z'\n";
 	test.erase('z');
 	for (MODE::map<char, int>::iterator it = test.begin(); it != test.end(); it++)
 		std::cout  << "{" << it->first << "/" << it->second << "}" << " ";
 	std::cout << "size " << test.size() << std::endl;
+
+
 
 	std::cout << "Erase leaf (No children) value 'd'\n";
 	test.erase('d');
@@ -130,17 +133,23 @@ std::cout << "size " << test2.size() << std::endl;
 		std::cout  << "{" << it->first << "/" << it->second << "}" << " ";
 	std::cout << "size " << test.size() << std::endl;
 
+
 	std::cout << "Erase node with 2 children value 'e'\n";
 	test.erase('e');
 	for (MODE::map<char, int>::iterator it = test.begin(); it != test.end(); it++)
 		std::cout  << "{" << it->first << "/" << it->second << "}" << " ";
 	std::cout << "size " << test.size() << std::endl;
 
+
 	std::cout << "Erase begin() value '" << test.begin()->first << "'" <<std::endl;
 	test.erase(test.begin());
+
 	for (MODE::map<char, int>::iterator it = test.begin(); it != test.end(); it++)
 		std::cout  << "{" << it->first << "/" << it->second << "}" << " ";
 	std::cout << "size " << test.size() << std::endl;
+
+
+
 
 	MODE::map<char, int>::iterator ender = test.end();
 	ite = test.begin();
@@ -148,14 +157,18 @@ std::cout << "size " << test2.size() << std::endl;
 	ender--;
 	ender--;
 	ender--;
+
 	std::cout << "Erase begin() +2(inclus) to end() -1(exclu) value. " << ite->first << " to " << ender->first << std::endl;
 	test.erase(ite, ender);
 	for (MODE::map<char, int>::iterator it = test.begin(); it != test.end(); it++)
 		std::cout  << "{" << it->first << "/" << it->second << "}" << " ";
 	std::cout << "size " << test.size() << std::endl;
 	
+
 	ender = test.end();
 	ender--;
+
+
 	std::cout << "Erase begin() to end() value. " << test.begin()->first << " to " <<
 															ender->first << "(include)" << std::endl;
 	test.erase(test.begin(), test.end());
@@ -169,6 +182,9 @@ std::cout << "size " << test2.size() << std::endl;
 		p.second = i + 1;
 		test.insert(p);
 	}
+
+}/*
+
 
 	std::cout << std::endl;
 	std::cout << "Reinsert the initial map value after erase all" << std::endl;
@@ -261,7 +277,7 @@ std::cout << "size " << test2.size() << std::endl;
 	for (MODE::map<char, int>::iterator it = test2.begin(); it != test2.end(); it++)
 		std::cout  << "{" << it->first << "/" << it->second << "}" << " ";
 	std::cout << "size " << test2.size() << std::endl;
-
+} //
 	ender = test2.upper_bound('d');
 	beginner = test2.lower_bound('b');
 	std::cout << "upper_bound('d') is " << ender->first << " lower_bound('b') is " << beginner->first << std::endl;
