@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 13:46:54 by chgilber          #+#    #+#             */
-/*   Updated: 2021/06/09 07:35:52 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/06/12 07:09:11 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,12 @@
 
 				Mapnode(value_type const &val = value_type()) : elem(val)
 				{
-			//		elem = val;
 					parent = NULL;
 					right = NULL;
 					left = NULL;
 				}
 				Mapnode(value_type const &val, Mapnode *dad) : elem(val)
 				{
-			//		elem = val;
 					parent = dad;
 					right = NULL;
 					left = NULL;
@@ -94,14 +92,14 @@
 
 			~pair() {}
 
-	/*		template <typename U1, typename U2>
+			template <typename U1, typename U2>
 				pair &operator=(const pair<U1, U2> &other)
 				{
 					first = other.first;
 					second = other.second;
 					return (*this);
 				}
-*/
+
 			pair &operator=(const pair &other)//: first(other.first), second(other.second)
 			{
 				first = other.first;

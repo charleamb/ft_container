@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/18 16:13:09 by lucas             #+#    #+#             */
-/*   Updated: 2021/06/10 18:57:37 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/06/12 17:27:07 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ std::cout << "size " << test2.size() << std::endl;
 	std::cout << "\nTest with insert :\n\n";
 	std::cout << "Add eleven pair to map and key value 'z' :\n";
 
-	system("cat Map/tree.txt");
+//	system("cat Map/tree.txt");
 	std::cout << std::endl;
 	for (int i = 0; i < 11; i++)
 	{
@@ -165,6 +165,7 @@ std::cout << "size " << test2.size() << std::endl;
 	std::cout << "size " << test.size() << std::endl;
 	
 
+
 	ender = test.end();
 	ender--;
 
@@ -175,6 +176,7 @@ std::cout << "size " << test2.size() << std::endl;
 	for (MODE::map<char, int>::iterator it = test.begin(); it != test.end(); it++)
 		std::cout  << "{" << it->first << "/" << it->second << "}" << " ";
 	std::cout << "size " << test.size() << std::endl;
+
 	for (int i = 0; i < 11; i++)
 	{
 		std::cout  << "{" << tab[i] << "/" << i + 1 << "}" << " ";
@@ -183,7 +185,8 @@ std::cout << "size " << test2.size() << std::endl;
 		test.insert(p);
 	}
 
-}/*
+
+
 
 
 	std::cout << std::endl;
@@ -192,6 +195,7 @@ std::cout << "size " << test2.size() << std::endl;
 		std::cout  << "{" << it->first << "/" << it->second << "}" << " ";
 	std::cout << "size " << test.size() << std::endl;
 }
+
 {
 	std::cout << "\n\nTest with clear() :\n\n";
 
@@ -263,24 +267,42 @@ std::cout << "size " << test2.size() << std::endl;
 	else
 		std::cout << "c is not in the map\n";
 
+
 	MODE::map<char, int>				test2;
 	MODE::map<char, int>::iterator	ender;
 	MODE::map<char, int>::iterator	beginner;
 
 	std::cout << "\n\nTest with lower_bound, upper_bound, equal_rabge :\n\n";
 	std::cout << "Value in map :\n";
+
 	test2['a'] = 20;
 	test2['b'] = 40;
 	test2['c'] = 60;
 	test2['d'] = 80;
 	test2['e'] = 100;
+
+
 	for (MODE::map<char, int>::iterator it = test2.begin(); it != test2.end(); it++)
 		std::cout  << "{" << it->first << "/" << it->second << "}" << " ";
 	std::cout << "size " << test2.size() << std::endl;
-} //
-	ender = test2.upper_bound('d');
+
+
+	ender = test2.upper_bound('f');
+	beginner = test2.lower_bound('f');
+	std::cout << "upper_bound('f') is " << ender->first << " lower_bound('f') is " << beginner->first << std::endl;
+	ender = test2.upper_bound('b');
 	beginner = test2.lower_bound('b');
-	std::cout << "upper_bound('d') is " << ender->first << " lower_bound('b') is " << beginner->first << std::endl;
+	std::cout << "upper_bound('b') is " << ender->first << " lower_bound('b') is " << beginner->first << std::endl;
+	ender = test2.upper_bound('c');
+	beginner = test2.lower_bound('c');
+	std::cout << "upper_bound('c') is " << ender->first << " lower_bound('c') is " << beginner->first << std::endl;
+	ender = test2.upper_bound('d');
+	beginner = test2.lower_bound('d');
+	std::cout << "upper_bound('d') is " << ender->first << " lower_bound('d') is " << beginner->first << std::endl;
+	ender = test2.upper_bound('e');
+	beginner = test2.lower_bound('e');
+
+	std::cout << "upper_bound('e') is " << ender->first << " lower_bound('e') is " << beginner->first << std::endl;
 	std::cout << "Erased values between iterator return by lower/upper_bound\n";
 	test2.erase(beginner, ender);
 	for (MODE::map<char, int>::iterator it = test2.begin(); it != test2.end(); it++)
@@ -289,6 +311,7 @@ std::cout << "size " << test2.size() << std::endl;
 }
 
 {
+
 	MODE::map<char,int> mymap;
 
 	mymap['a']=10;
@@ -351,6 +374,7 @@ std::cout << "size " << test2.size() << std::endl;
 }
 
 {
+
 	std::map<char,int> foo,bar;
 
 	foo['x']=100;
@@ -404,6 +428,5 @@ std::cout << "size " << test2.size() << std::endl;
 	if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
 
 }
-*/
 	return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 10:48:01 by chgilber          #+#    #+#             */
-/*   Updated: 2021/06/10 19:04:17 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/06/12 18:00:59 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ template <class Key,                                      // map::key_type
 				_top = NULL;
 				_lower = NULL;
 				_upper = NULL;
+				_end = NULL;
 				_n = 0;
 			}
 
@@ -215,30 +216,11 @@ template <class Key,                                      // map::key_type
 			//	 << " end dady  = [" << (int)_end->parent->elem.first << "]"
 						  << "upper = [" << (int)_upper->elem.first << "]" << std::endl;
 				iterator it = begin();
-				std::cout << "lower = [" << (int)it->first << "]";
-				it++;
-				std::cout << "lower++ = [" << (int)it->first << "]";
-				it++;
-				std::cout << "lower++ = [" << (int)it->first << "]";
-				it++;
-				std::cout << "lower++ = [" << (int)it->first << "]";
-				it++;
-				std::cout << "lower++ = [" << (int)it->first << "]";
-				it++;
-				std::cout << "lower++ = [" << (int)it->first << "]";
-				it++;
-				std::cout << "lower = [" << (int)it->first << "]";
-				it++;
-				std::cout << "lower++ = [" << (int)it->first << "]";
-				it++;
-				std::cout << "lower++ = [" << (int)it->first << "]";
-				it++;
-				std::cout << "lower++ = [" << (int)it->first << "]";
-				it++;
-				std::cout << "lower++ = [" << (int)it->first << "]";
-				it++;
-				std::cout << "lower++ = [" << (int)it->first << "]";
-				it++;
+				for (size_type i = 0; i < _n; i++)
+				{
+					std::cout << "lower = [" << (int)it->first << "]";
+					it++;
+				}
 				std::cout << std::endl;
 
 			}
@@ -293,15 +275,16 @@ template <class Key,                                      // map::key_type
 
 			void	clear()
 			{
-					if (_n > 0)
-						delete _end;
-					erase(begin(), end());
+			//	if ( _n > 0 && _end)
+			//		delete _end;
+				erase(begin(), end());
 			}
 			
 			size_type	count(const key_type &k) const
 			{
-				(void)k;
-				return  _n;
+				if(find(k) != end())
+					return 1;
+				return  0;
 			}
 
 			bool	empty() const
@@ -320,11 +303,11 @@ template <class Key,                                      // map::key_type
 			
 			pair<const_iterator, const_iterator>	equal_range(const key_type &k) const
 			{
-				(void)k;
+				return make_pair(lower_bound(k), upper_bound(k));
 			}
 			pair<iterator, iterator>	equal_range(const key_type &k)
 			{
-				(void)k;
+				return make_pair(lower_bound(k), upper_bound(k));
 			}
 
 			iterator	erase(iterator position)
@@ -336,7 +319,7 @@ template <class Key,                                      // map::key_type
 //	std::cout << "delet = {" << (int)delet->elem.first << "}" << std::endl;
 					if (delet == _top)
 					{
-						if (delet->left && check )//&& delet->left->right)
+						if (delet->left && check )
 						{
 							Mapnode		*_ptr = delet->left;
 							while (_ptr->right)
@@ -365,14 +348,16 @@ template <class Key,                                      // map::key_type
 //	std::cout << "4" << std::endl;
 						}
 						else
-							std::cout << "5" << std::endl;
+						{}
+//							std::cout << "5" << std::endl;
 					}
 					else if (delet->left)
 					{
 //	std::cout << "delet->left = {" << (int)delet->left->elem.first << "}" << std::endl;
-
+//							std::cout << "6" << std::endl;
 						if (delet->right)
 						{
+//							std::cout << "7" << std::endl;
 //	std::cout << "insade delet->right = {" << (int)delet->right->elem.first << "}" << std::endl;
 							delet->right->parent = delet->left;
 							delet->left->right = delet->right;
@@ -382,6 +367,7 @@ template <class Key,                                      // map::key_type
 				//		delet->parent->left = NULL;
 						if (delet->parent)
 						{
+//							std::cout << "8" << std::endl;
 //	std::cout << "delet = {" << (int)delet->elem.first << "}" << std::endl;
 							if (delet->parent->right && delet == delet->parent->right)
 								delet->parent->right = delet->right;
@@ -392,16 +378,17 @@ template <class Key,                                      // map::key_type
 					else if (delet->right)
 					{
 //	std::cout << "only delet->right = {" << (int)delet->right->elem.first << "}" << std::endl;
+//							std::cout << "9" << std::endl;
 						delet->right->parent = delet->parent;
 //	std::cout << "delet->right->parent = {" << (int)delet->right->parent->elem.first << "}" << std::endl;
 						if (delet->parent)
 						{
+		//		std::cout << "10" << std::endl;
 							if (delet->parent->right && delet == delet->parent->right)
 								delet->parent->right = delet->right;
 							else if (delet->parent->left && delet == delet->parent->left)
 								delet->parent->left = delet->left;
 						}
-
 					//	delet->parent->left = delet->right;
 					//	delet->parent->right = delet->right;
 //	std::cout << "delet->parent->left = {" << (int)delet->parent->left->elem.first << "}" << std::endl;
@@ -418,19 +405,20 @@ template <class Key,                                      // map::key_type
 					if (delet == _lower)
 					{
 //	std::cout << "in lower = {" << (int)delet->elem.first << "}" << std::endl;
-//	std::cout << "in lower  lower= {" << (int)_lower->elem.first << "}" << std::endl;
 						if (delet->parent)
 							delet->parent->left = (delet->right) ? delet->right : NULL;
+			//std::cout << "15" << std::endl;
 						if (delet->right)
 						{
 							Mapnode		*_ptr = delet->right;
 							while (_ptr->left)
 								_ptr = _ptr->left;
+	//		std::cout << "16" << std::endl;
 							_lower =  _ptr;
 						}
 						else
 							_lower = ((delet == _top) ? _top : delet->parent);
-//		std::cout << " after in lower  lower= {" << (int)_lower->elem.first << "}" << std::endl;
+	//			std::cout << "17" << std::endl;
 					}
 					if (delet == _upper)
 					{
@@ -446,14 +434,15 @@ template <class Key,                                      // map::key_type
 						}
 						else
 							_upper = ((delet == _top) ? _top : delet->parent);
-//		std::cout << " after in lower  lower= {" << (int)_lower->elem.first << "}" << std::endl;
 					}
 			_end->parent = _upper;
 			_upper->right = _end;
+//	std::cout << "before del = {" << (int)delet->elem.first << "}" << std::endl;
 					delete delet;
+//	std::cout << "after del lower  = {" << (int)_lower->elem.first << "}" << std::endl;
 					delet = NULL;
 					_n--;
-			}
+				}
 				return position;
 			}
 			size_type	erase(const key_type &k)
@@ -462,48 +451,43 @@ template <class Key,                                      // map::key_type
 
 				if (del == end())
 					return _n;
-	//	std::cout << "erase -> {" << (int)k << "}" << std::endl;
-	//			print();
 				erase(del);
-//				print();
-//		std::cout << " after print }" << std::endl;
-		//		while (1)
-		//			;
 				return _n;
 			}
 			iterator	erase(iterator first, iterator last)
 			{
 				iterator		tmp = first;
 				int i = 0;
-				while (first != last)
+	//				print();
 		//		while (i < 8)
+				while (first != last)
 				{
 					tmp++;
-//					print();
-//		std::cout << "erase -> {" << (int)first->first << "}" << std::endl;
+//		std::cout << "erase -> {" << (int)first->first << "} ou ["<< first->first <<"]" << std::endl;
 					erase(first);
 					first = tmp;
 					i++;
 				}
 				if (_lower == findmn(first))
 						delete _lower;
-//				print();
 				return first;
 			}
 
 			iterator	find(const key_type &k)
 			{
+				if (_n < 1)
+					return end();
 				iterator findo = begin();
-
 				while (findo->first != k && findo != end())
 					findo++;
 				return (findo);
 			}
 			const_iterator	find(const key_type &k) const
 			{
-				const_iterator findo = begin();
-
-				while (findo->first != k && findo != end())
+				if (_n < 1)
+					return end();
+				iterator findo = begin();
+				while (findo != end() && findo->first != k )
 					findo++;
 				return (findo);
 			}
@@ -515,6 +499,7 @@ template <class Key,                                      // map::key_type
 			
 			pair<iterator, bool>	insert(const value_type &val)
 			{
+
 				Mapnode		*node = _top;
 				Mapnode		*leaf = NULL;
 				if (_n == 0)
@@ -525,6 +510,8 @@ template <class Key,                                      // map::key_type
 					_end = new Mapnode;
 					_top->right = _end;
 					_upper->right = _end;
+					_n++;
+					return make_pair(iterator(_top), true);
 				}
 				else if (node->elem.first == val.first)
 				{
@@ -563,8 +550,6 @@ template <class Key,                                      // map::key_type
 								{
 									_lower->left = leaf;
 									_lower = leaf;
-			//						std::cout << "lowe " << _lower->elem.first << std::endl;
-								//	std::cout << "left de lower " << _lower->left->elem.first << std::endl;
 								}
 								node->left = leaf;
 								break;
@@ -581,7 +566,6 @@ template <class Key,                                      // map::key_type
 								leaf = new Mapnode(val, node);
 								if (node == _upper)
 								{
-			//						std::cout << "im nodeide " << _upper->parent->elem.second << std::endl;
 									_upper->right = leaf;
 									_upper = leaf;
 								}
@@ -599,8 +583,6 @@ template <class Key,                                      // map::key_type
 			}
 			iterator		insert(iterator pos, const value_type &val)
 			{
-		//		(void)pos;
-			//	 return ((insert(val)).first);
 				insert(val);
 				return pos;
 			}
@@ -623,11 +605,19 @@ template <class Key,                                      // map::key_type
 			
 			iterator	lower_bound(const key_type &k)
 			{
-				(void)k;
+				iterator	check = find(k);
+
+				if (check == end())
+					return check;
+				return check;
 			}
 			const_iterator	lower_bound(const key_type &k) const
 			{
-				(void)k;
+				iterator	check = find(k);
+
+				if (check == end())
+					return check;
+				return check;
 			}
 
 			size_type			max_size(void) const
@@ -640,21 +630,26 @@ template <class Key,                                      // map::key_type
 			{
 				clear();
 				if (copy.size() != 0)
-					insert(begin(), copy.begin(), copy.end());
+					insert(copy.begin(), copy.end());
 				return *this;
 			}
 			mapped_type	&operator[](const key_type &k)
 			{
-				return ((((insert(make_pair(k, mapped_type()))).first))->second);
+				iterator	check = find(k);
+
+				if (check != end())
+					return check->second;
+				pair<iterator,bool> ret = insert(make_pair(k,mapped_type()));
+				return ret.first->second;
 			}
 
 			reverse_iterator		rbegin()
 			{
-				return reverse_iterator(_upper);
+				return reverse_iterator(_end);
 			}
 			reverse_const_iterator	rbegin() const
 			{
-				return reverse_iterator(_upper);
+				return reverse_iterator(_end);
 			}
 
 			reverse_iterator		rend()
@@ -673,16 +668,41 @@ template <class Key,                                      // map::key_type
 			
 			void	swap(map &x)
 			{
+				size_type tmpn;
+				key_compare tmpk;
+				Mapnode		*tmpm;
+
+				tmpn = _n;
 				_n = x._n;
+				x._n = tmpn;
+				tmpk = _key_compare;
+				_key_compare = x._key_compare;
+				x._key_compare = tmpk;
+				tmpm = _lower;
+				_lower = x._lower;
+				x._lower = tmpm;
+				tmpm = _upper;
+				_upper = x._upper;
+				x._upper = tmpm;
 			}
 		
 			iterator		upper_bound(const key_type &k)
 			{
-				(void)k;
+				iterator	check = find(k);
+
+				if (check == end())
+					return check;
+				check++;
+				return check;
 			}
 			const_iterator	upper_bound(const key_type &k) const
 			{
-				(void)k;
+				iterator	check = find(k);
+
+				if (check == end())
+					return check;
+				check++;
+				return check;
 			}
 
 			value_compare	value_comp() const
@@ -691,30 +711,30 @@ template <class Key,                                      // map::key_type
 			}
 
 };
-/*	template <class T, class Alloc>
-		bool		operator==(const map<T,Alloc>& lhs, const map<T,Alloc>& rhs)
+	template <class Key, class T, class Compare = less<Key> , class Alloc>
+		bool		operator==(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
 		{
 			if (lhs.size() != rhs.size())
 				return (false);
-			for (typename ft::map<T>::iterator l = lhs.begin(), r = rhs.begin();
+			for (typename ft::map<Key, T>::iterator l = lhs.begin(), r = rhs.begin();
 					l != lhs.end() ; l++, r++)
 				if (*l != *r)
 					return (false);
 			return (true);
 		}
 
-	template <class T, class Alloc>
-		bool		operator!=(const map<T,Alloc>& lhs, const map<T,Alloc>& rhs)
+	template <class Key, class T, class Compare = less<Key> , class Alloc>
+		bool		operator!=(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
 		{
 			return (!(lhs == rhs));
 		}
 
-	template <class T, class Alloc>
-		bool		operator<(const map<T,Alloc>& lhs, const map<T,Alloc>& rhs)
+	template <class Key, class T, class Compare = less<Key> , class Alloc>
+		bool		operator<(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
 		{
 			if (lhs == rhs)
 				return (false);
-			for (typename ft::map<T>::iterator l = lhs.begin(), r = rhs.begin();
+			for (typename ft::map<Key, T>::iterator l = lhs.begin(), r = rhs.begin();
 					l != lhs.end(); l++, r++)
 			{
 				if (*l < *r)
@@ -725,31 +745,30 @@ template <class Key,                                      // map::key_type
 			return (false);
 		}
 
-	template <class T, class Alloc>
-		bool		operator>(const map<T,Alloc>& lhs, const map<T,Alloc>& rhs)
+	template <class Key, class T, class Compare = less<Key> , class Alloc>
+		bool		operator>(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
 		{
 			return (rhs < lhs);
 		}
 
-	template <class T, class Alloc>
-		bool		operator<=(const map<T,Alloc>& lhs, const map<T,Alloc>& rhs)
+	template <class Key, class T, class Compare = less<Key> , class Alloc>
+		bool		operator<=(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
 		{
 			if (lhs == rhs)
 				return (true);
 			return (!(rhs < lhs));
 		}
 
-	template <class T, class Alloc>
-		bool		operator>=(const map<T,Alloc>& lhs, const map<T,Alloc>& rhs)
+	template <class Key, class T, class Compare = less<Key> , class Alloc>
+		bool		operator>=(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
 		{
 			return (!(lhs < rhs));
 		}
 
-	template <class T, class Alloc>
-		void		swap(map<T,Alloc>& x, map<T,Alloc>& y)
+	template <class Key, class T, class Compare = less<Key> , class Alloc>
+		void		swap(map<Key, T, Compare, Alloc>& x, map<Key, T, Compare, Alloc>& y)
 		{
 			x.swap(y);
 		}
-}*/
 }
 #endif

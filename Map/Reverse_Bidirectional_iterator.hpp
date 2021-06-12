@@ -6,7 +6,7 @@
 /*   By: chgilber <charleambg@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 18:29:35 by chgilber          #+#    #+#             */
-/*   Updated: 2021/06/10 00:36:13 by chgilber         ###   ########.fr       */
+/*   Updated: 2021/06/12 06:57:23 by chgilber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ namespace ft
 						tmp = _ptr;
 						_ptr = _ptr->parent;
 					}
-		//		else if (_ptr->parent)
-		//			_ptr = _ptr->parent;
 				}
 				return *this;
 			}
@@ -91,8 +89,6 @@ namespace ft
 						tmp = _ptr;
 						_ptr = _ptr->parent;
 					}
-		//		else if (_ptr->parent)
-		//			_ptr = _ptr->parent;
 				}
 				return tmp;
 			}
@@ -143,7 +139,7 @@ namespace ft
 			{
 				return (_ptr == other._ptr);
 			}
-			bool	operator!=(self const &other)
+			bool	operator!=(self const &other) const
 			{
 				return (_ptr != other._ptr);
 			}
